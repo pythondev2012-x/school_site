@@ -1,0 +1,327 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+            <div class="rs-slider main-home">
+                <div class="rs-carousel owl-carousel" data-loop="true" data-items="1" data-margin="0" data-autoplay="true" data-hoverpause="true" data-autoplay-timeout="5000" data-smart-speed="800" data-dots="false" data-nav="false" data-nav-speed="false" data-center-mode="false" data-mobile-device="1" data-mobile-device-nav="false" data-mobile-device-dots="false" data-ipad-device="1" data-ipad-device-nav="false" data-ipad-device-dots="false" data-ipad-device2="1" data-ipad-device-nav2="false" data-ipad-device-dots2="false" data-md-device="1" data-md-device-nav="true" data-md-device-dots="false">
+                    {% for i in banners %}
+                    <div class="slider-content slide1" style="background-image: url('{{ i.image.url }}') !important;">
+                        <div class="container">
+                            <div class="content-part">
+                                <div class="sl-sub-title wow bounceInLeft" data-wow-delay="300ms" data-wow-duration="2000ms">{{ i.text }}</div>
+                                <h1 class="sl-title wow fadeInRight" data-wow-delay="600ms" data-wow-duration="2000ms">{{ i.title }}</h1>
+                                <div class="sl-btn wow fadeInUp" data-wow-delay="900ms" data-wow-duration="2000ms">
+                                    <a class="readon orange-btn main-home" href="#contact-section">Bog'lanish</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Features Section start -->
+                <div id="rs-features" class="rs-features main-home">
+                    <div class="container">
+                       <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Features Section End -->
+            </div>
+            <!-- Slider Section End -->
+
+            <!-- Categories Section Start -->
+            <div id="rs-categories" class="rs-categories main-home pt-90 pb-100 md-pt-60 md-pb-80">
+                <div class="container">
+                    <div class="sec-title3 text-center mb-45">
+                        <h2 class="title black-color">Dars jarayonlari</h2>
+                    </div>
+                        <div class="row mb-35">
+                            {% for j in lessons_collection %}
+                            <div class="col-lg-4 col-md-6 mb-30">
+                                <div class="categories-items">
+                                    <div class="cate-images">
+                                        <a href="{% url 'detail_lesson' j.id %}">
+                                            {% if j.cover_image %}
+                                                <img src="{{ j.cover_image.url }}" alt="{{ j.title }}" style="width: 100%; height: 250px; object-fit: cover;">
+                                            {% else %}
+                                                <img src="{% static 'assets/images/placeholder.jpg' %}" alt="No image">
+                                            {% endif %}
+                                        </a>
+                                    </div>
+
+                                    <div class="contents">
+                                        <div class="img-part">
+                                            {% if j.cover_image %}
+                                                <a href="{% url 'detail_lesson' j.id %}">
+                                                    <img src="{{ j.cover_image.url }}" alt="{{ j.title }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                                </a>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="content-wrap">
+                                            <h2 class="title">
+                                                <a href="{% url 'detail_lesson' j.id %}">{{ j.title }}</a>
+                                            </h2>
+                                            <span href="{% url 'detail_lesson' j.id %}" class="course-qnty">{{ j.text|truncatechars:50 }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                </div>
+            </div>
+            <!-- Categories Section End -->
+
+            <!-- Popular Courses Section Start -->
+            <div id="rs-popular-courses" class="rs-popular-courses main-home event-bg pt-100 pb-100 md-pt-70 md-pb-70">
+                <div class="container">
+                    <div class="sec-title3 text-center mb-45">
+                        <h2 class="title black-color">HACKATHON IT SCHOOL HAQIDA</h2>
+                    </div>
+                    <div class="row">
+                        {% for blog in blogs %}
+                        <div class="col-lg-4 col-md-6 mb-24">
+                           <div class="courses-item">
+                                <div class="courses-grid">
+                                    <div class="img-part">
+                                        <a href="{% url 'detail' blog.id %}"><img src="{{ blog.image.url }}" alt=""></a>
+                                    </div>
+                                    <div class="content-part">
+                                        <div class="info-meta">
+                                        </div>
+                                        <h3 class="title"><a href="{% url 'detail' blog.id %}">{{ blog.title }}</a></h3>
+                                        <ul class="meta-part">
+                                            <li class="user"><i class="fa fa-user"></i>{{ blog.created }}</li>
+                                            <li class="user"><i class="fa fa-file"></i>{{ blog.category }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                           </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- Popular Courses Section End -->
+
+
+            <!-- Testimonial Section Start -->
+<div id="rs-testimonial" class="rs-testimonial main-home pt-100 pb-100 md-pt-70 md-pb-70" style="position: relative; overflow: hidden;">
+
+    <img src="{% static 'assets/images/bq/bq.jpg' %}" alt="Background"
+         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
+
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 1;"></div>
+
+    <div class="container" style="position: relative; z-index: 2;">
+        <div class="sec-title3 mb-50 md-mb-30 text-center">
+            <div class="sub-title primary">Faxrli o'quvchilar</div>
+            <h2 class="title white-color">O'quvchilarimiz fikrlari</h2>
+        </div>
+
+        <div class="rs-carousel owl-carousel"
+            data-loop="true"
+            data-items="2"
+            data-margin="30"
+            data-autoplay="true"
+            data-hoverpause="true"
+            data-autoplay-timeout="5000"
+            data-smart-speed="800"
+            data-dots="true"
+            data-nav="false"
+            data-md-device="2"
+            data-ipad-device="2"
+            data-mobile-device="1">
+
+            {% for leader in leaders %}
+            <div class="testi-item" style="display: block !important; background: rgba(255, 255, 255, 0.05); padding: 40px 30px; border-radius: 20px; margin: 15px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px);">
+                <div class="testi-content" style="display: block !important; text-align: center;">
+
+                    <div style="margin-bottom: 20px;">
+                        <img src="{% static 'assets/images/testimonial/main-home/test-2.png' %}" alt="quote"
+                             style="width: 35px !important; display: inline-block !important;">
+                    </div>
+
+                    <div style="display: block !important; margin-bottom: 25px; min-height: 60px !important;">
+                        <p style="color: #e0e0e0 !important; font-size: 16px !important; line-height: 1.7 !important; font-style: italic;">
+                            "{{ leader.text }}"
+                        </p>
+                    </div>
+
+                    <div style="display: block !important; margin: 0 auto 15px;">
+                        <img src="{{ leader.image.url }}" alt="{{ leader.name }}"
+                             style="width: 80px !important; height: 80px !important; border-radius: 50% !important; object-fit: cover; margin: 0 auto; border: 3px solid #f16e00; display: block !important;">
+                    </div>
+
+                    <div style="display: block !important;">
+                        <h4 style="color: #ffffff !important; font-size: 20px !important; margin: 5px 0 !important;">{{ leader.name }}</h4>
+                        <span style="color: #f16e00 !important; font-weight: bold; font-size: 15px !important; display: block !important;">
+                            NATIJA: {{ leader.score }} BALL
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+<div id="rs-team" class="rs-team style1 pt-90 pb-90">
+    <div class="container">
+        <div class="sec-title3 text-center mb-50">
+            <h2 class="title black-color">Tajribali Ustozlarimiz</h2>
+        </div>
+
+        <div class="teacher-slick-slider">
+            {% for teacher in teachers %}
+                <div class="px-2"> <div class="team-item" style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; border-bottom: 3px solid #f16e00;">
+                        <div class="team-img position-relative">
+                            {% if teacher.image %}
+                                <img src="{{ teacher.image.url }}" alt="{{ teacher.name }}" style="width: 100%; height: 320px; object-fit: cover;">
+                            {% endif %}
+                        </div>
+                        <div class="team-content text-center p-4 bg-white">
+                            <h4 class="fw-bold">{{ teacher.name }}</h4>
+                            <a href="{% url 'detail_teacher' teacher.id %}" class="btn btn-sm rounded-pill mt-3" style="color: #F16E00FF">Batafsil</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Testimonial Section End -->
+
+<section class="contact-section" id="contact-section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title">Bog'lanish</h2>
+      <p class="section-subtitle">Savollaringiz bo'lsa biz bilan bog'laning</p>
+    </div>
+
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <div class="contact-shapes">
+            <div class="circle-1"></div>
+            <div class="circle-2"></div>
+        </div>
+
+        <div class="info-content">
+            <h3>Biz bilan bog'laning</h3>
+            <p>Hackathon IT School — kelajagingizni biz bilan boshlang!</p>
+
+            <div class="info-item">
+              <i class="fa fa-phone"></i>
+              <span>+998 90 580 48 11</span>
+            </div>
+
+            <div class="info-item">
+              <i class="fa fa-envelope"></i>
+              <span>info@hackathon.uz</span>
+            </div>
+
+            <div class="info-item">
+              <i class="fa fa-map-marker"></i>
+              <span>Chimyon, Farg'ona</span>
+            </div>
+        </div>
+      </div>
+
+      <form method="POST" action="{% url 'home' %}" class="contact-form">
+            {% csrf_token %}
+            <div class="input-group">
+              <input type="text" name="name" id="name" required>
+              <label for="name">To'liq ismingiz</label>
+            </div>
+
+            <div class="input-group">
+              <input type="email" name="email" id="email" required>
+              <label for="email">Email</label>
+            </div>
+
+            <div class="input-group">
+              <input type="text" name="address" id="address" required>
+              <label for="address">Manzilingiz (Tuman/Shahar)</label>
+            </div>
+
+            <div class="input-group">
+              <input type="tel" name="phone" id="phone" required>
+              <label for="phone">Tel</label>
+            </div>
+
+            <div class="input-group">
+              <textarea name="message" id="message" rows="5" required></textarea>
+              <label for="message">Xabar</label>
+            </div>
+
+            <button type="submit" class="btn-send">Send Message</button>
+        </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-wrapper {
+    display: flex;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .contact-info {
+    flex: 1;
+    padding: 50px;
+    position: relative;
+    color: #fff;
+  }
+  .contact-form {
+    flex: 1.5;
+    padding: 50px;
+  }
+  .input-group {
+    position: relative;
+    margin-bottom: 30px;
+  }
+  .input-group input, .input-group textarea {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    outline: none;
+    background: transparent;
+    transition: 0.3s;
+  }
+  .input-group label {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    color: #999;
+  }
+  .input-group input:focus ~ label, .input-group input:valid ~ label,
+  .input-group textarea:focus ~ label, .input-group textarea:valid ~ label {
+    top: -20px;
+    font-size: 12px;
+    color: #f16e00;
+  }
+  .input-group input:focus, .input-group textarea:focus {
+    border-bottom: 2px solid #f16e00;
+  }
+  .btn-send:hover {
+    background-color: #d15d00 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(241, 110, 0, 0.3);
+  }
+  @media (max-width: 768px) {
+    .contact-wrapper { flex-direction: column; }
+    .contact-info, .contact-form { padding: 30px; }
+  }
+</style>
+
+{% endblock %}

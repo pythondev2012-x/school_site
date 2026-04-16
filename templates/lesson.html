@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="page-title-section bg-dark py-5" style="background: #1a1a1a;">
+    <div class="container text-center py-4">
+        <h1 class="display-4 fw-bold text-white mb-2">{{ collection.title }}</h1>
+        <p class="text-white-50 fs-5 mb-4">IT fanlardan olingan videolar va rasmlar</p>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'home' %}" class="text-warning text-decoration-none">
+                        <i class="fa fa-home"></i> Bosh sahifa
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="javascript:history.back()" class="text-warning text-decoration-none">
+                        <i class="fa fa-chevron-left" style="font-size: 10px;"></i> Oldingi sahifa
+                    </a>
+                </li>
+                <li class="breadcrumb-item active text-white-50" aria-current="page">Hozirgi dars</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<div class="container my-5">
+    <div class="row g-4">
+        {% for lsn in collection.lesson.all %}
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden">
+
+                    <div class="position-relative bg-black" style="min-height: 300px;">
+                        <div class="lesson-slider" id="slider-{{ lsn.id }}">
+                            {% for vid in lsn.videos.all %}
+                                <div class="slider-slide">
+                                    <div class="ratio ratio-16x9">
+                                        <video controls preload="metadata">
+                                            <source src="{{ vid.video.url }}" type="video/mp4">
+                                        </video>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            {% for img in lsn.images.all %}
+                                <div class="slider-slide">
+                                    <img src="{{ img.image.url }}" class="w-100 d-block" style="height: 300px; object-fit: cover;" alt="Dars rasmi">
+                                </div>
+                            {% endfor %}
+
+                            {% if not lsn.videos.all and not lsn.images.all %}
+                                <div class="slider-slide d-flex align-items-center justify-content-center bg-light" style="height: 300px;">
+                                    <p class="text-muted">Lavha mavjud emas</p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% with total=lsn.videos.all.count|add:lsn.images.all.count %}
+                        {% if total > 1 %}
+                            <button class="slider-nav prev" onclick="moveSlider('{{ lsn.id }}', -1)">&#10094;</button>
+                            <button class="slider-nav next" onclick="moveSlider('{{ lsn.id }}', 1)">&#10095;</button>
+                            <div class="swipe-hint">Yon tomonga suring</div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+
+                    <div class="card-body p-4 text-start">
+                        <h4 class="card-title fw-bold text-dark">{{ lsn.name }}</h4>
+                        <p class="card-text text-muted small">Dars materiallari va lavhalar to'plami.</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    /* Breadcrumb ajratuvchi rangini oq qilish */
+    .breadcrumb-item + .breadcrumb-item::before {
+        color: rgba(255,255,255,0.5) !important;
+    }
+
+    /* Slider Konteyneri */
+    .lesson-slider {
+        display: flex;
+        transition: transform 0.4s ease-in-out;
+        width: 100%;
+    }
+    .slider-slide {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    /* Boshqaruv tugmalari */
+    .slider-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        z-index: 10;
+        border-radius: 5px;
+        transition: 0.3s;
+    }
+    .slider-nav:hover { background: #f16e00; }
+    .slider-nav.prev { left: 10px; }
+    .slider-nav.next { right: 10px; }
+
+    .swipe-hint {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 11px;
+        background: rgba(0,0,0,0.4);
+        padding: 2px 10px;
+        border-radius: 10px;
+        pointer-events: none;
+    }
+
+    /* Ranglar va Hover effektlar */
+    .text-warning { color: #f16e00 !important; }
+    .bg-warning { background-color: #f16e00 !important; }
+
+    .btn-outline-warning {
+        color: #f16e00;
+        border-color: #f16e00;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    .btn-outline-warning:hover {
+        background-color: #f16e00;
+        color: white;
+    }
+
+    /* Yangi qo'shilgan hover effekti (outline-light uchun) */
+    .btn-outline-light:hover {
+        background-color: #f16e00;
+        border-color: #f16e00;
+        color: white;
+    }
+</style>
+
+<script>
+    const sliderPositions = {};
+
+    function moveSlider(lsnId, direction) {
+        const slider = document.getElementById('slider-' + lsnId);
+        const slides = slider.querySelectorAll('.slider-slide');
+        const totalSlides = slides.length;
+
+        if (!sliderPositions[lsnId]) sliderPositions[lsnId] = 0;
+
+        sliderPositions[lsnId] += direction;
+
+        if (sliderPositions[lsnId] >= totalSlides) sliderPositions[lsnId] = 0;
+        if (sliderPositions[lsnId] < 0) sliderPositions[lsnId] = totalSlides - 1;
+
+        const offset = sliderPositions[lsnId] * -100;
+        slider.style.transform = `translateX(${offset}%)`;
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* 1. Header: Blog Detail bilan bir xil premium uslub */
+    .blog-header {
+        position: relative;
+        background: #111111;
+        padding: 140px 0 100px;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .blog-header .shape {
+        position: absolute;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .shape-1 {
+        top: -100px;
+        right: -100px;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(255, 84, 33, 0.1) 0%, rgba(17, 17, 17, 0) 70%);
+        border-radius: 50%;
+    }
+
+    .shape-2 {
+        top: 30%;
+        left: -50px;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.03);
+        transform: rotate(45deg);
+        border-radius: 15px;
+    }
+
+    .blog-header-content { position: relative; z-index: 10; }
+
+    .blog-header h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 25px;
+        letter-spacing: -1.5px;
+    }
+
+    .breadcrumb-custom {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px 30px;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .breadcrumb-custom a { color: #ff5421; font-weight: 700; text-decoration: none; }
+    .breadcrumb-custom span { margin: 0 15px; color: rgba(255, 255, 255, 0.3); font-size: 12px; }
+    .breadcrumb-custom b { color: rgba(255, 255, 255, 0.8); font-weight: 500; }
+
+    /* 2. Maqolalar kartasi dizayni */
+    .category-blog-card {
+        background: #ffffff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid #f1f1f1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .category-blog-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .category-blog-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+
+    .card-body-custom {
+        padding: 25px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-date {
+        color: #ff5421;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .card-body-custom h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        line-height: 1.4;
+    }
+
+    .card-body-custom h3 a {
+        color: #0f172a;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .card-body-custom h3 a:hover {
+        color: #ff5421;
+    }
+
+    .read-more-btn {
+        margin-top: auto;
+        color: #64748b;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        transition: 0.3s;
+    }
+
+    .read-more-btn:hover {
+        color: #ff5421;
+    }
+
+    .read-more-btn i {
+        margin-left: 5px;
+        font-size: 12px;
+    }
+</style>
+
+<section class="blog-header">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+    <div class="container text-center blog-header-content">
+        <span style="color: #ff5421; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; display: block; margin-bottom: 15px;">
+            BO'LIMLAR BO'YICHA SARALASH
+        </span>
+        <h1>Bo'lim: {{ category.name }}</h1>
+        <div class="breadcrumb-custom">
+            <a href="{% url 'home' %}">Bosh sahifa</a>
+            <span><i class="fa fa-chevron-right"></i></span>
+            <b>{{ category.name }}</b>
+        </div>
+    </div>
+</section>
+
+<div class="pt-100 pb-100" style="background: #f8fafc;">
+    <div class="container">
+        <div class="row">
+            {% for blog in blogs %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="category-blog-card">
+                    <a href="{% url 'detail' blog.id %}">
+                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                    </a>
+                    <div class="card-body-custom">
+                        <span class="card-date"><i class="fa fa-calendar-alt"></i> {{ blog.created|date:"d.m.Y" }}</span>
+                        <h3>
+                            <a href="{% url 'detail' blog.id %}">{{ blog.title }}</a>
+                        </h3>
+                        <a href="{% url 'detail' blog.id %}" class="read-more-btn">
+                            Batafsil o'qish <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="sidebar-widget" style="padding: 50px; background: white; border-radius: 20px;">
+                    <i class="fa fa-folder-open" style="font-size: 50px; color: #cbd5e1; margin-bottom: 20px;"></i>
+                    <h3 class="text-muted">Bu bo'limda hozircha maqolalar mavjud emas.</h3>
+                    <a href="{% url 'home' %}" class="btn mt-3" style="background: #ff5421; color: #fff; border-radius: 50px; padding: 12px 35px; font-weight: 700;">
+                        Bosh sahifaga qaytish
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

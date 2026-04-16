@@ -1,0 +1,8 @@
+.venv
+educavo-html-bootstarp-5
+media/lessons/videos/media/lessons/videos/
+db.sqlite3
+.idea/
+__pycache__/
+venv/
+.venv/
